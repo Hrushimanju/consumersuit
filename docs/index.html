@@ -3,96 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ConsumerSuit — Live Demo</title>
-<meta name="description" content="Try ConsumerSuit's AI legal analysis engine. Describe your UK consumer, employment, or housing dispute and get an instant case assessment.">
+<title>ConsumerSuit — Portfolio Demo</title>
+<meta name="description" content="ConsumerSuit: UK legal-tech AI platform. Portfolio case study by Hrushikesh Thotamsetty, AMIMechE.">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#faf7f0;color:#1a2332;min-height:100vh}
 .header{background:#1a2332;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:36px;height:36px;background:#c1502e;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:bold}
-.logo-text{color:white;font-size:16px;font-weight:600;letter-spacing:.3px}
+.logo-icon{width:34px;height:34px;background:#c1502e;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:17px;color:white}
+.logo-text{color:white;font-size:15px;font-weight:600}
 .logo-sub{color:#94a3b8;font-size:11px;margin-top:1px}
-.live-badge{background:#c1502e;color:white;font-size:12px;font-weight:600;padding:5px 12px;border-radius:4px;text-decoration:none;letter-spacing:.3px}
-.hero{max-width:760px;margin:0 auto;padding:40px 20px 0;text-align:center}
-.hero h1{font-size:30px;font-weight:700;color:#1a2332;margin-bottom:10px;font-family:Georgia,serif}
-.hero p{font-size:15px;color:#555;line-height:1.65;max-width:560px;margin:0 auto}
+.live-btn{background:#c1502e;color:white;font-size:12px;font-weight:600;padding:6px 13px;border-radius:4px;text-decoration:none}
+.hero{max-width:760px;margin:0 auto;padding:36px 20px 0;text-align:center}
+.hero h1{font-size:28px;font-weight:700;color:#1a2332;margin-bottom:8px;font-family:Georgia,serif}
+.hero p{font-size:14px;color:#555;line-height:1.65;max-width:540px;margin:0 auto 20px}
+.cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:4px}
+.cta-primary{background:#1a2332;color:white;padding:10px 22px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600}
+.cta-secondary{background:white;color:#1a2332;padding:10px 22px;border-radius:6px;text-decoration:none;font-size:14px;border:1px solid #d4c8b0}
 .tabs{max-width:760px;margin:24px auto 0;padding:0 20px;display:flex;gap:4px}
-.tab{padding:8px 16px;border:1px solid #d4c8b0;border-bottom:none;border-radius:6px 6px 0 0;background:#ede8dc;font-size:13px;color:#666;cursor:pointer;font-weight:400}
+.tab{padding:8px 16px;border:1px solid #d4c8b0;border-bottom:none;border-radius:6px 6px 0 0;background:#ede8dc;font-size:13px;color:#666;cursor:pointer}
 .tab.active{background:white;color:#1a2332;font-weight:600;border-color:#c8c0b0;border-bottom:1px solid white;margin-bottom:-1px;position:relative;z-index:1}
-.main{max-width:760px;margin:0 auto;padding:0 20px 40px;border-top:1px solid #c8c0b0}
+.main{max-width:760px;margin:0 auto;padding:0 20px 40px}
 .panel{background:white;border:1px solid #d4c8b0;border-top:none;border-radius:0 6px 6px 6px;padding:24px}
-.sample-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
-.chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid #d4c8b0;border-radius:20px;background:#f5f0e8;font-size:12px;color:#555;cursor:pointer;white-space:nowrap}
-.chip:hover{border-color:#999;color:#1a2332}
-textarea{width:100%;padding:12px;border:1px solid #d4c8b0;border-radius:6px;font-family:inherit;font-size:14px;line-height:1.65;color:#1a2332;background:#faf7f0;resize:vertical;outline:none}
-textarea:focus{border-color:#1a2332;background:white}
-.analyse-btn{width:100%;margin-top:10px;padding:12px;background:#1a2332;color:white;border:none;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:.4px;transition:background .15s}
-.analyse-btn:hover{background:#2a3545}
-.analyse-btn:disabled{background:#ccc;cursor:not-allowed}
-.loading{display:none;margin-top:16px;padding:14px 16px;background:#f5f0e8;border:1px solid #d4c8b0;border-radius:6px}
-.step{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:13px;color:#999;transition:color .2s}
-.step.done{color:#1a2332}
-.step.active{color:#1a2332;font-weight:500}
-.step-icon{font-size:13px;min-width:16px;text-align:center}
-.error{display:none;margin-top:12px;padding:11px 14px;background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;font-size:13px;color:#991b1b}
-.results{display:none;flex-direction:column;gap:12px;margin-top:20px}
-.result-card{background:white;border:1px solid #d4c8b0;border-radius:8px;padding:14px 16px}
-.card-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#888;margin-bottom:8px}
-.score-grid{display:grid;grid-template-columns:110px 1fr;gap:12px}
-.score-box{border:1px solid #d4c8b0;border-radius:8px;padding:14px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.score-num{font-size:44px;font-weight:700;line-height:1;font-family:Georgia,serif}
-.score-denom{font-size:11px;color:#999;margin-top:2px}
-.strength-badge{margin-top:10px;font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.5px;transform:rotate(-2deg);display:inline-block}
+/* result cards */
+.result-note{background:#f0f7ff;border:1px solid #bfdbfe;border-radius:6px;padding:10px 14px;font-size:12px;color:#1d4ed8;margin-bottom:16px}
+.score-grid{display:grid;grid-template-columns:110px 1fr;gap:12px;margin-bottom:12px}
+.score-box{border:1px solid #d4c8b0;border-radius:8px;padding:14px 8px;text-align:center}
+.score-num{font-size:42px;font-weight:700;line-height:1;font-family:Georgia,serif;color:#16a34a}
+.score-denom{font-size:10px;color:#999;margin-top:2px}
+.strength-badge{margin-top:9px;font-size:9px;font-weight:700;padding:2px 7px;border:1px solid #16a34a;border-radius:3px;color:#16a34a;display:inline-block;transform:rotate(-2deg)}
 .claims-box{border:1px solid #d4c8b0;border-radius:8px;padding:12px 14px}
-.claim-row{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px}
+.card-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#888;margin-bottom:8px}
+.claim-row{display:flex;gap:5px;align-items:flex-start;margin-bottom:4px}
 .claim-arrow{color:#c1502e;font-size:12px;margin-top:2px;flex-shrink:0}
-.claim-text{font-size:13px;color:#1a2332;line-height:1.4}
-.settlement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.settle-cell{background:#f5f0e8;border-radius:6px;padding:10px;text-align:center}
-.settle-label{font-size:10px;color:#888;margin-bottom:4px}
-.settle-val{font-size:17px;font-weight:700;font-family:Georgia,serif}
-.evidence-row{display:flex;align-items:center;gap:9px;padding:5px 0;border-bottom:1px solid #ede8dc;font-size:12px}
-.evidence-row:last-child{border-bottom:none}
-.ev-icon{font-size:14px;min-width:16px;text-align:center;flex-shrink:0}
+.claim-text{font-size:12px;color:#1a2332;line-height:1.4}
+.result-card{background:white;border:1px solid #d4c8b0;border-radius:8px;padding:13px 15px;margin-bottom:11px}
+.settle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.settle-cell{background:#f5f0e8;border-radius:6px;padding:9px;text-align:center}
+.settle-label{font-size:10px;color:#888;margin-bottom:3px}
+.settle-val{font-size:16px;font-weight:700;font-family:Georgia,serif}
+.ev-row{display:flex;align-items:center;gap:9px;padding:5px 0;border-bottom:1px solid #ede8dc;font-size:12px}
+.ev-row:last-child{border-bottom:none}
+.ev-icon{font-size:13px;min-width:16px;text-align:center;flex-shrink:0}
 .ev-item{flex:1;color:#1a2332}
-.ev-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.5px;min-width:56px;text-align:center}
+.ev-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;min-width:52px;text-align:center}
 .law-tags{display:flex;flex-wrap:wrap;gap:5px}
 .law-tag{font-size:11px;padding:3px 8px;background:#f5f0e8;border:1px solid #d4c8b0;border-radius:4px;color:#555}
-.next-step-box{padding:12px 14px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px}
-.next-step-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#16a34a;margin-bottom:4px}
-.next-step-text{font-size:13px;color:#1a2332;line-height:1.6}
-.limit-box{padding:10px 14px;background:#fffbeb;border:1px solid #fbbf24;border-radius:6px;font-size:12px;color:#92400e}
-/* Skills tab */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.next-box{padding:11px 14px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;margin-bottom:11px}
+.next-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#16a34a;margin-bottom:4px}
+.next-text{font-size:12px;color:#1a2332;line-height:1.6}
+.case-input-box{background:#faf7f0;border:1px solid #d4c8b0;border-radius:6px;padding:12px 14px;font-size:13px;color:#1a2332;line-height:1.6;margin-bottom:12px;font-style:italic}
+.try-live{display:block;width:100%;padding:11px;background:#c1502e;color:white;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;letter-spacing:.3px}
+/* skills */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
 .stat-box{background:#f5f0e8;border-radius:6px;padding:12px;text-align:center}
-.stat-n{font-size:22px;font-weight:700;color:#c1502e;font-family:Georgia,serif}
+.stat-n{font-size:21px;font-weight:700;color:#c1502e;font-family:Georgia,serif}
 .stat-l{font-size:11px;color:#666;margin-top:3px}
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
 .skill-card{border:1px solid #d4c8b0;border-radius:8px;overflow:hidden}
-.skill-header{display:flex;align-items:center;gap:7px;padding:9px 13px;background:#f5f0e8;border-bottom:1px solid #d4c8b0;font-size:13px;font-weight:600;color:#1a2332}
-.skill-body{padding:12px 13px}
+.sk-header{display:flex;align-items:center;gap:7px;padding:9px 13px;background:#f5f0e8;border-bottom:1px solid #d4c8b0;font-size:13px;font-weight:600}
+.sk-body{padding:12px 13px}
 .sk-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px}
-.sk-label.red{color:#c1502e}
-.sk-label.grn{color:#16a34a}
+.sk-label.red{color:#c1502e}.sk-label.grn{color:#16a34a}
 .sk-text{font-size:12px;line-height:1.5}
-/* Arch tab */
+/* arch */
 .arch-flow{display:flex;flex-direction:column;gap:10px}
 .arch-node{border:1px solid #d4c8b0;border-radius:8px;padding:12px 14px}
 .arch-title{font-size:12px;font-weight:600;color:#1a2332;margin-bottom:4px}
-.arch-desc{font-size:11px;color:#666;line-height:1.5}
+.arch-desc{font-size:11px;color:#666;line-height:1.55}
 .arch-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-.chain-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px}
-.chain-node{background:white;border:1px solid #d4c8b0;border-radius:5px;padding:4px 10px;text-align:center;font-size:11px}
-.chain-n{font-weight:600;color:#1a2332}
-.chain-r{color:#888;font-size:10px}
-.chain-arrow{color:#aaa;font-size:12px}
-@media(max-width:600px){
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .arch-cols{grid-template-columns:1fr}
-  .score-grid{grid-template-columns:1fr}
-  .settlement-grid{grid-template-columns:1fr}
-}
+.chain-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chain-node{background:white;border:1px solid #d4c8b0;border-radius:5px;padding:4px 9px;text-align:center;font-size:11px}
+footer{text-align:center;padding:18px;background:#ede8dc;border-top:1px solid #d4c8b0;font-size:12px;color:#888;margin-top:24px}
+@media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}.arch-cols{grid-template-columns:1fr}.score-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -102,19 +85,23 @@ textarea:focus{border-color:#1a2332;background:white}
     <div class="logo-icon">⚖</div>
     <div>
       <div class="logo-text">ConsumerSuit</div>
-      <div class="logo-sub">UK Legal-Tech AI Platform · May–Jun 2026</div>
+      <div class="logo-sub">Portfolio case study · H. Thotamsetty AMIMechE</div>
     </div>
   </div>
-  <a class="live-badge" href="https://consumer-suit.uk" target="_blank" rel="noopener">Live Site ↗</a>
+  <a class="live-btn" href="https://consumer-suit.uk" target="_blank" rel="noopener">Live Site ↗</a>
 </div>
 
 <div class="hero">
-  <h1>Case Analysis Engine</h1>
-  <p>Real AI legal analysis — powered by the ConsumerSuit production system. Describe any UK consumer, employment, or housing dispute and get an instant case assessment.</p>
+  <h1>UK Legal-Tech AI Platform</h1>
+  <p>ConsumerSuit analyses consumer, employment, and housing disputes against UK law — returning a case score, evidence matrix, settlement range, and next steps. Built from zero to test-deployed product in 16 days.</p>
+  <div class="cta-row">
+    <a class="cta-primary" href="https://consumer-suit.uk" target="_blank" rel="noopener">Try the live product ↗</a>
+    <a class="cta-secondary" href="https://github.com/Hrushimanju/consumersuit" target="_blank" rel="noopener">View on GitHub</a>
+  </div>
 </div>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('demo',this)">📋 Live Demo</button>
+  <button class="tab active" onclick="showTab('demo',this)">📋 Sample Output</button>
   <button class="tab" onclick="showTab('skills',this)">⚡ Skills Transfer</button>
   <button class="tab" onclick="showTab('arch',this)">🏗 Architecture</button>
 </div>
@@ -123,18 +110,69 @@ textarea:focus{border-color:#1a2332;background:white}
 
 <!-- DEMO PANEL -->
 <div class="panel" id="panel-demo">
-  <div class="sample-row">
-    <button class="chip" onclick="loadCase(0)">📂 Employment</button>
-    <button class="chip" onclick="loadCase(1)">📂 Housing</button>
-    <button class="chip" onclick="loadCase(2)">📂 Consumer</button>
+  <div class="result-note">
+    Representative output from the ConsumerSuit analysis engine. The engine applies UK statute references, Vento bands (6 Apr 2026), NMW checks, and settlement aggregation across all heads of claim.
   </div>
-  <textarea id="case-input" rows="4" placeholder="Describe your dispute…">My employer cut my hours after I told them I have ADHD. They refused to make reasonable adjustments and a senior colleague made belittling comments about my condition in team meetings. I eventually felt forced to resign. What are my rights and what can I claim?</textarea>
-  <button class="analyse-btn" id="analyse-btn" onclick="runAnalysis()">▶ Analyse This Case</button>
-  <div class="loading" id="loading">
-    <div id="steps-list"></div>
+
+  <div class="case-input-box">
+    "My employer cut my hours after I told them I have ADHD. They refused to make reasonable adjustments and a senior colleague made belittling comments about my condition in team meetings. I eventually felt forced to resign."
   </div>
-  <div class="error" id="error-box"></div>
-  <div class="results" id="results-box"></div>
+
+  <!-- Score + claims -->
+  <div class="score-grid" style="margin-bottom:12px">
+    <div class="score-box">
+      <div class="score-num">82</div>
+      <div class="score-denom">/100</div>
+      <div class="strength-badge">STRONG CLAIM</div>
+    </div>
+    <div class="claims-box">
+      <div class="card-label">Claims identified</div>
+      <div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">Disability discrimination — failure to make reasonable adjustments (Equality Act 2010 s.20–21)</span></div>
+      <div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">Harassment related to disability (Equality Act 2010 s.26)</span></div>
+      <div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">Constructive dismissal (Employment Rights Act 1996 s.95(1)(c))</span></div>
+      <div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">Discrimination arising from disability (Equality Act 2010 s.15)</span></div>
+    </div>
+  </div>
+
+  <!-- Settlement -->
+  <div class="result-card">
+    <div class="card-label">Settlement range</div>
+    <div class="settle-grid">
+      <div class="settle-cell"><div class="settle-label">Conservative</div><div class="settle-val" style="color:#666">£18,000</div></div>
+      <div class="settle-cell"><div class="settle-label">Most likely</div><div class="settle-val" style="color:#1a2332">£38,500</div></div>
+      <div class="settle-cell"><div class="settle-label">Maximum</div><div class="settle-val" style="color:#16a34a">£68,000</div></div>
+    </div>
+  </div>
+
+  <!-- Evidence matrix -->
+  <div class="result-card">
+    <div class="card-label">Evidence matrix</div>
+    <div class="ev-row"><span class="ev-icon" style="color:#16a34a">✓</span><span class="ev-item">Written record of hour reduction (email or rota change)</span><span class="ev-badge" style="background:#f0fdf4;color:#16a34a;border:1px solid #86efac">STRONG</span></div>
+    <div class="ev-row"><span class="ev-icon" style="color:#16a34a">✓</span><span class="ev-item">ADHD diagnosis documentation</span><span class="ev-badge" style="background:#f0fdf4;color:#16a34a;border:1px solid #86efac">STRONG</span></div>
+    <div class="ev-row"><span class="ev-icon" style="color:#d97706">⚠</span><span class="ev-item">Witness evidence of colleague's comments in meetings</span><span class="ev-badge" style="background:#fffbeb;color:#d97706;border:1px solid #fcd34d">WEAK</span></div>
+    <div class="ev-row"><span class="ev-icon" style="color:#d97706">⚠</span><span class="ev-item">Written flexible working request and refusal</span><span class="ev-badge" style="background:#fffbeb;color:#d97706;border:1px solid #fcd34d">WEAK</span></div>
+    <div class="ev-row"><span class="ev-icon" style="color:#dc2626">✗</span><span class="ev-item">Grievance filed prior to resignation</span><span class="ev-badge" style="background:#fef2f2;color:#dc2626;border:1px solid #fca5a5">MISSING</span></div>
+    <div class="ev-row"><span class="ev-icon" style="color:#dc2626">✗</span><span class="ev-item">Medical evidence linking ADHD to working conditions</span><span class="ev-badge" style="background:#fef2f2;color:#dc2626;border:1px solid #fca5a5">MISSING</span></div>
+  </div>
+
+  <!-- Legislation -->
+  <div class="result-card">
+    <div class="card-label">Applicable legislation</div>
+    <div class="law-tags">
+      <span class="law-tag">Equality Act 2010 ss.6, 13, 15, 20–21, 26, 39</span>
+      <span class="law-tag">ERA 1996 s.95(1)(c)</span>
+      <span class="law-tag">ACAS Code of Practice 1</span>
+      <span class="law-tag">Vento bands (Apr 2026)</span>
+    </div>
+  </div>
+
+  <!-- Next step -->
+  <div class="next-box" style="margin-bottom:16px">
+    <div class="next-label">Recommended next step</div>
+    <div class="next-text">Contact ACAS to begin early conciliation before filing ET1. Strict 3-month limitation from effective date of constructive dismissal. Collect written evidence of the hour reduction and the reasonable adjustments request immediately — these are the foundation of the s.20–21 claim.</div>
+  </div>
+
+  <a class="try-live" href="https://consumer-suit.uk" target="_blank" rel="noopener">Analyse your own case at consumer-suit.uk ↗</a>
 </div>
 
 <!-- SKILLS PANEL -->
@@ -147,55 +185,55 @@ textarea:focus{border-color:#1a2332;background:white}
   </div>
   <div class="skills-grid">
     <div class="skill-card">
-      <div class="skill-header">✓ Verification &amp; validation</div>
-      <div class="skill-body">
+      <div class="sk-header">✓ Verification &amp; validation</div>
+      <div class="sk-body">
         <div class="sk-label red">ConsumerSuit</div>
-        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">4-case QA scorecard — found critical statutory section gaps and settlement undercount; directed ranked fix list; all cases re-verified clean</div>
+        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Designed and ran a 5-case accuracy harness. Found critical gaps — wrong statutory sections, settlement undercount — directed fixes; re-run confirmed improvements on all verified cases.</div>
         <div class="sk-label grn">→ Engineering equivalent</div>
         <div class="sk-text" style="color:#555">V&amp;V test design, defect identification, root-cause analysis, corrective action tracking</div>
       </div>
     </div>
     <div class="skill-card">
-      <div class="skill-header">⚡ Systems architecture</div>
-      <div class="skill-body">
+      <div class="sk-header">⚡ Systems architecture</div>
+      <div class="sk-body">
         <div class="sk-label red">ConsumerSuit</div>
-        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Multi-provider AI fallback chain with per-tier rate limiting and 1,000/day global circuit breaker; zero single points of failure</div>
+        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Designed multi-provider AI fallback chain (Anthropic → Mistral → Groq) with per-tier rate limiting and 1,000/day global circuit breaker — eliminating single points of failure.</div>
         <div class="sk-label grn">→ Engineering equivalent</div>
         <div class="sk-text" style="color:#555">Redundant system design, FMEA, reliability engineering, SPOF elimination</div>
       </div>
     </div>
     <div class="skill-card">
-      <div class="skill-header">🔍 Risk assessment</div>
-      <div class="skill-body">
+      <div class="sk-header">🔍 Risk assessment</div>
+      <div class="sk-body">
         <div class="sk-label red">ConsumerSuit</div>
-        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Identified server-side IP exposure vulnerability during security review; led immediate remediation before public launch</div>
+        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Identified that AI legal prompts (core IP) were exposed client-side in browser DevTools. Led immediate server-side migration before public launch.</div>
         <div class="sk-label grn">→ Engineering equivalent</div>
-        <div class="sk-text" style="color:#555">Hazard identification, security risk assessment, FMEA, risk closure tracking</div>
+        <div class="sk-text" style="color:#555">Hazard identification, security risk assessment, FMEA, risk closure</div>
       </div>
     </div>
     <div class="skill-card">
-      <div class="skill-header">📋 Requirements engineering</div>
-      <div class="skill-body">
+      <div class="sk-header">⚙ Performance engineering</div>
+      <div class="sk-body">
         <div class="sk-label red">ConsumerSuit</div>
-        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Translated complex UK legal domain (EqA, ERA, GDPR, CCA) into precise, testable technical specifications for the AI system</div>
+        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Trialled NVIDIA NIM as primary AI provider. Benchmarked at 67-second response time against a &lt;5s target. Rejected on quantitative grounds with decision and rationale documented.</div>
         <div class="sk-label grn">→ Engineering equivalent</div>
-        <div class="sk-text" style="color:#555">SRS documentation, stakeholder requirements capture, functional decomposition, traceability matrix</div>
+        <div class="sk-text" style="color:#555">Performance testing, load analysis, technology evaluation with quantitative pass/fail criteria</div>
       </div>
     </div>
     <div class="skill-card">
-      <div class="skill-header">⚙ Performance engineering</div>
-      <div class="skill-body">
+      <div class="sk-header">📋 Requirements engineering</div>
+      <div class="sk-body">
         <div class="sk-label red">ConsumerSuit</div>
-        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Benchmarked NVIDIA NIM at 67-second response time; applied quantitative rejection criteria; clean revert with decision documented</div>
+        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Translated complex UK legal domain (EqA 2010, ERA 1996, GDPR, CCA 1974) into precise, testable technical specifications for the AI analysis engine.</div>
         <div class="sk-label grn">→ Engineering equivalent</div>
-        <div class="sk-text" style="color:#555">Performance testing, load analysis, technology evaluation with pass/fail criteria</div>
+        <div class="sk-text" style="color:#555">SRS documentation, stakeholder requirements capture, functional decomposition, traceability</div>
       </div>
     </div>
     <div class="skill-card">
-      <div class="skill-header">📝 Technical documentation</div>
-      <div class="skill-body">
+      <div class="sk-header">📝 Technical documentation</div>
+      <div class="sk-body">
         <div class="sk-label red">ConsumerSuit</div>
-        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Maintained PROJECT_LOG and FOUNDER_JOURNAL throughout build — all decisions recorded with rationale and lessons-learned</div>
+        <div class="sk-text" style="color:#1a2332;margin-bottom:9px">Maintained PROJECT_LOG and FOUNDER_JOURNAL throughout the build — all decisions recorded with rationale, alternatives considered, and lessons learned.</div>
         <div class="sk-label grn">→ Engineering equivalent</div>
         <div class="sk-text" style="color:#555">Design records, engineering notebooks, lessons-learned documentation, decision register</div>
       </div>
@@ -210,36 +248,36 @@ textarea:focus{border-color:#1a2332;background:white}
     <div style="text-align:center;font-size:11px;color:#aaa;margin:-4px 0">↓</div>
     <div class="arch-node" style="background:#f0f4fa">
       <div class="arch-title">☁ Cloudflare Pages + Edge Functions</div>
-      <div class="arch-desc">consumer-suit.uk · Auto-deploy from git main · Security headers · IP rate limiting · Prompt injection protection · Zero servers to manage</div>
+      <div class="arch-desc">consumer-suit.uk · Auto-deploy from git main · Security headers · Rate limiting · Prompt injection protection · No servers to manage</div>
     </div>
     <div class="arch-cols">
-      <div class="arch-node"><div class="arch-title">🗄 Data layer</div><div class="arch-desc">D1 SQLite (users, sessions, subscriptions) · KV store (leads, feedback, funnel metrics)</div></div>
-      <div class="arch-node"><div class="arch-title">💳 Payments</div><div class="arch-desc">Stripe checkout + webhooks + portal · 4 tiers: £9 / £29 / £79 / £149/month</div></div>
-      <div class="arch-node"><div class="arch-title">🔐 Auth</div><div class="arch-desc">Google OAuth 2.0 · Session tokens in D1 · Entirely server-side — never client-exposed</div></div>
+      <div class="arch-node"><div class="arch-title">🗄 Data</div><div class="arch-desc">D1 SQLite: users, sessions, subscriptions · KV: leads, feedback, funnel metrics</div></div>
+      <div class="arch-node"><div class="arch-title">💳 Payments</div><div class="arch-desc">Stripe checkout + webhooks + portal · £9 / £29 / £79 / £149 per month</div></div>
+      <div class="arch-node"><div class="arch-title">🔐 Auth</div><div class="arch-desc">Google OAuth 2.0 · Session tokens in D1 · Entirely server-side</div></div>
     </div>
     <div class="arch-node" style="background:#f0fdf4;border-color:#86efac">
-      <div class="arch-title" style="color:#16a34a">🤖 AI fallback chain (priority order)</div>
+      <div class="arch-title" style="color:#16a34a">🤖 AI fallback chain</div>
       <div class="chain-row">
-        <div class="chain-node"><div class="chain-n">Anthropic Claude</div><div class="chain-r">Primary</div></div>
-        <div class="chain-arrow">→</div>
-        <div class="chain-node"><div class="chain-n">Mistral Large</div><div class="chain-r">Fallback 1</div></div>
-        <div class="chain-arrow">→</div>
-        <div class="chain-node"><div class="chain-n">Groq Llama 70B</div><div class="chain-r">Premium fast lane</div></div>
-        <div class="chain-arrow">→</div>
-        <div class="chain-node"><div class="chain-n">Circuit breaker</div><div class="chain-r">1,000/day global</div></div>
+        <div class="chain-node"><div style="font-weight:600">Anthropic Claude</div><div style="color:#888;font-size:10px">Primary</div></div>
+        <span style="color:#aaa">→</span>
+        <div class="chain-node"><div style="font-weight:600">Mistral Large</div><div style="color:#888;font-size:10px">Fallback 1</div></div>
+        <span style="color:#aaa">→</span>
+        <div class="chain-node"><div style="font-weight:600">Groq Llama 70B</div><div style="color:#888;font-size:10px">Premium fast lane</div></div>
+        <span style="color:#aaa">→</span>
+        <div class="chain-node"><div style="font-weight:600">Circuit breaker</div><div style="color:#888;font-size:10px">1,000/day global</div></div>
       </div>
     </div>
     <div class="arch-node" style="background:#eff6ff;border-color:#bfdbfe">
-      <div class="arch-title" style="color:#1d4ed8">⚖ Legal knowledge layer (server-side only — hidden from browser DevTools)</div>
-      <div class="arch-desc">Compressed system prompt (~5.5k tokens) · EqA 2010 section discipline · NMW floor check · Vento bands (6 Apr 2026) · DSAR Art.82 · CCA s.75 · 28 civil law areas verified against legislation.gov.uk · Settlement aggregation across all heads of claim</div>
+      <div class="arch-title" style="color:#1d4ed8">⚖ Legal knowledge layer (server-side only)</div>
+      <div class="arch-desc">Compressed system prompt (~5.5k tokens) · EqA 2010 section discipline · NMW floor check · Vento bands (6 Apr 2026) · DSAR Art.82 · CCA s.75 · 28 civil law areas · Settlement aggregation across all heads of claim · Never visible in browser DevTools</div>
     </div>
     <div class="arch-node">
-      <div class="arch-title">🛡 Security architecture decisions</div>
-      <div class="arch-desc" style="display:flex;flex-direction:column;gap:5px;margin-top:6px">
-        <div>✓ <strong>IP protection:</strong> prompts server-side after founder caught DevTools exposure</div>
-        <div>✓ <strong>Injection protection:</strong> input sanitised server-side; no raw concatenation into prompts</div>
-        <div>✓ <strong>Debug gate:</strong> OWNER_KEY auth added after security review found open endpoint</div>
+      <div class="arch-title">🛡 Security decisions</div>
+      <div class="arch-desc" style="display:flex;flex-direction:column;gap:5px;margin-top:5px">
+        <div>✓ <strong>IP protection:</strong> prompts server-side after founder caught DevTools exposure pre-launch</div>
         <div>✓ <strong>Performance reject:</strong> NVIDIA NIM benchmarked at 67s → rejected on quantitative criteria</div>
+        <div>✓ <strong>Injection protection:</strong> input sanitised server-side, no raw concatenation into prompts</div>
+        <div>✓ <strong>Rate limiting:</strong> per-tier quota + 1,000/day global circuit breaker</div>
       </div>
     </div>
   </div>
@@ -247,144 +285,19 @@ textarea:focus{border-color:#1a2332;background:white}
 
 </div>
 
-<footer style="text-align:center;padding:20px;background:#ede8dc;border-top:1px solid #d4c8b0;font-size:12px;color:#888">
+<footer>
   ConsumerSuit · <a href="https://consumer-suit.uk" style="color:#c1502e">consumer-suit.uk</a> ·
-  H. Thotamsetty — AMIMechE · MSc Mechanical Engineering · University of Liverpool ·
-  <a href="https://github.com/Hrushimanju/ConsumerSuit" style="color:#c1502e">GitHub</a>
+  H. Thotamsetty — AMIMechE #80821391 · MSc Mechanical Engineering · University of Liverpool ·
+  <a href="https://github.com/Hrushimanju/consumersuit" style="color:#c1502e">GitHub</a>
 </footer>
 
 <script>
-const CASES=[
-  "My employer cut my hours after I told them I have ADHD. They refused to make reasonable adjustments and a senior colleague made belittling comments about my condition in team meetings. I eventually felt forced to resign. What are my rights and what can I claim?",
-  "My landlord kept my full £1,400 deposit when I moved out. The property was in the same condition as when I arrived. They never gave me a tenancy deposit scheme certificate and have ignored all my messages for 6 weeks.",
-  "I bought a used car 3 weeks ago for £8,500 described as 'full working order'. The engine now has a major fault. The dealer says it's wear and tear and refuses to repair or refund. What are my rights under consumer law?"
-];
-const STEPS=["Parsing dispute details...","Checking applicable legislation...","Reviewing limitation periods...","Calculating heads of claim...","Building evidence matrix...","Generating case assessment..."];
-const SYS=`You are ConsumerSuit's AI legal analyst. Analyse UK consumer/employment/housing disputes. Respond ONLY in valid JSON with no markdown, no explanation. Schema: {"score":75,"strength":"STRONG CLAIM","claim_types":["example"],"settlement_low":"£8,000","settlement_mid":"£22,000","settlement_high":"£38,000","evidence":[{"item":"Written confirmation of role changes","status":"STRONG"}],"key_law":["Equality Act 2010 ss.6,13,15"],"next_step":"Immediate action.","limitation_note":null}. strength: STRONG CLAIM|VIABLE CLAIM|WEAK CLAIM|NO CLAIM. status: STRONG|WEAK|MISSING.`;
-
 function showTab(t,btn){
   ['demo','skills','arch'].forEach(id=>{
     document.getElementById('panel-'+id).style.display=id===t?'block':'none';
   });
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-}
-
-function loadCase(i){
-  document.getElementById('case-input').value=CASES[i];
-  document.getElementById('results-box').style.display='none';
-  document.getElementById('error-box').style.display='none';
-}
-
-let af=null;
-function animScore(el,target){
-  let n=0;if(af)cancelAnimationFrame(af);
-  function t(){n=Math.min(n+3,target);el.textContent=n;if(n<target)af=requestAnimationFrame(t);}t();
-}
-
-function scColor(n){return n>=70?'#16a34a':n>=45?'#2563eb':'#dc2626';}
-function stStyle(s){
-  if(s==='STRONG')return{icon:'✓',bg:'#f0fdf4',col:'#16a34a',border:'#86efac'};
-  if(s==='WEAK')return{icon:'⚠',bg:'#fffbeb',col:'#d97706',border:'#fcd34d'};
-  return{icon:'✗',bg:'#fef2f2',col:'#dc2626',border:'#fca5a5'};
-}
-
-async function runAnalysis(){
-  const txt=document.getElementById('case-input').value.trim();
-  if(!txt)return;
-  const btn=document.getElementById('analyse-btn');
-  const lb=document.getElementById('loading');
-  const rb=document.getElementById('results-box');
-  const eb=document.getElementById('error-box');
-  btn.textContent='Analysing case…';btn.disabled=true;
-  lb.style.display='block';rb.style.display='none';rb.innerHTML='';eb.style.display='none';
-  const sl=document.getElementById('steps-list');sl.innerHTML='';
-  const els=STEPS.map((s,i)=>{
-    const d=document.createElement('div');d.className='step';
-    d.innerHTML=`<span class="step-icon" id="si${i}">○</span><span id="st${i}">${s}</span>`;
-    sl.appendChild(d);return d;
-  });
-  let cur=0;
-  const iv=setInterval(()=>{
-    if(cur>0){document.getElementById('si'+(cur-1)).textContent='✓';els[cur-1].className='step done';}
-    if(cur<STEPS.length){document.getElementById('si'+cur).textContent='▶';els[cur].className='step active';cur++;}
-  },600);
-  try{
-    // Same-origin call to the real ConsumerSuit analysis engine.
-    // Uses the production hardened system prompt server-side.
-    const res=await fetch(DEMO_ENDPOINT,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:txt,history:[]})
-    });
-    clearInterval(iv);
-    // If not on consumer-suit.uk (GitHub Pages / local), fetch will fail or return wrong format.
-    // Detect and redirect gracefully.
-    if(res.status===404||res.status===0){
-      eb.style.display='block';
-      eb.innerHTML='This demo runs on <a href="https://consumer-suit.uk/demo" style="color:#c1502e">consumer-suit.uk/demo</a> — click to try the live version.';
-      lb.style.display='none';btn.textContent='▶ Analyse This Case';btn.disabled=false;
-      return;
-    }
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const d=await res.json();
-    // The /api/analyse endpoint returns {reply: "..."} with a JSON string inside.
-    // Parse whichever shape comes back.
-    let parsed;
-    if(d.reply){
-      parsed=JSON.parse((d.reply||'').replace(/```json|```/g,'').trim());
-    } else if(d.score!==undefined){
-      parsed=d;
-    } else {
-      const txt2=(d.content?.[0]?.text||d.message||JSON.stringify(d)).replace(/```json|```/g,'').trim();
-      parsed=JSON.parse(txt2);
-    }
-    renderResult(parsed);
-  }catch(e){
-    clearInterval(iv);
-    // Likely not on consumer-suit.uk — redirect
-    if(window.location.hostname!=='consumer-suit.uk'){
-      eb.style.display='block';
-      eb.innerHTML='This demo requires the ConsumerSuit backend. <a href="https://consumer-suit.uk/demo" style="color:#c1502e">Try it at consumer-suit.uk/demo</a>';
-    } else {
-      eb.style.display='block';eb.textContent='Analysis failed — '+e.message+'. Please try again.';
-    }
-  }
-  lb.style.display='none';btn.textContent='▶ Analyse This Case';btn.disabled=false;
-}
-
-function renderResult(r){
-  const rb=document.getElementById('results-box');
-  const sc=scColor(r.score);
-  const ev=(r.evidence||[]).map(e=>{
-    const s=stStyle(e.status);
-    return `<div class="evidence-row"><span class="ev-icon" style="color:${s.col}">${s.icon}</span><span class="ev-item">${e.item}</span><span class="ev-badge" style="background:${s.bg};color:${s.col};border:1px solid ${s.border}">${e.status}</span></div>`;
-  }).join('');
-  const claims=(r.claim_types||[]).map(c=>`<div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">${c}</span></div>`).join('');
-  const law=(r.key_law||[]).map(l=>`<span class="law-tag">${l}</span>`).join('');
-  rb.innerHTML=`
-    <div class="score-grid">
-      <div class="score-box">
-        <div class="score-num" id="score-num" style="color:${sc}">0</div>
-        <div class="score-denom">/100</div>
-        <div class="strength-badge" style="border:1px solid ${sc};color:${sc}">${r.strength}</div>
-      </div>
-      <div class="claims-box"><div class="card-label">Claims identified</div>${claims}</div>
-    </div>
-    <div class="result-card">
-      <div class="card-label">Settlement range</div>
-      <div class="settlement-grid">
-        <div class="settle-cell"><div class="settle-label">Conservative</div><div class="settle-val" style="color:#666">${r.settlement_low}</div></div>
-        <div class="settle-cell"><div class="settle-label">Most likely</div><div class="settle-val" style="color:#1a2332">${r.settlement_mid}</div></div>
-        <div class="settle-cell"><div class="settle-label">Maximum</div><div class="settle-val" style="color:#16a34a">${r.settlement_high}</div></div>
-      </div>
-    </div>
-    <div class="result-card"><div class="card-label">Evidence matrix</div>${ev}</div>
-    <div class="result-card"><div class="card-label">Applicable legislation</div><div class="law-tags">${law}</div></div>
-    ${r.next_step?`<div class="next-step-box"><div class="next-step-label">Recommended next step</div><div class="next-step-text">${r.next_step}</div></div>`:''}
-    ${r.limitation_note?`<div class="limit-box">⚠ <strong>Limitation:</strong> ${r.limitation_note}</div>`:''}
-  `;
-  rb.style.display='flex';
-  animScore(document.getElementById('score-num'),r.score);
 }
 </script>
 </body>
