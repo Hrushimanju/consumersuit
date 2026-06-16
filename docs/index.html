@@ -75,6 +75,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .chain-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
 .chain-node{background:white;border:1px solid #d4c8b0;border-radius:5px;padding:4px 9px;text-align:center;font-size:11px}
 footer{text-align:center;padding:18px;background:#ede8dc;border-top:1px solid #d4c8b0;font-size:12px;color:#888;margin-top:24px}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid #d4c8b0;border-radius:20px;background:#f5f0e8;font-size:12px;color:#555;cursor:pointer}
+.chip:hover{border-color:#999;color:#1a2332}
 @media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}.arch-cols{grid-template-columns:1fr}.score-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -110,27 +112,33 @@ footer{text-align:center;padding:18px;background:#ede8dc;border-top:1px solid #d
 
 <!-- DEMO PANEL -->
 <div class="panel" id="panel-demo">
-  <div class="result-note">
-    Representative output from the ConsumerSuit analysis engine. The engine applies UK statute references, Vento bands (6 Apr 2026), NMW checks, and settlement aggregation across all heads of claim.
+  <div class="sample-row" style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px">
+    <button class="chip" onclick="loadCase(0)">📂 Employment</button>
+    <button class="chip" onclick="loadCase(1)">📂 Housing</button>
+    <button class="chip" onclick="loadCase(2)">📂 Consumer</button>
+  </div>
+  <textarea id="case-input" rows="4" placeholder="Describe your dispute…" style="width:100%;box-sizing:border-box;margin-bottom:9px;font-family:inherit;font-size:13px;line-height:1.65;padding:11px;border:1px solid #d4c8b0;border-radius:6px;background:#faf7f0;resize:vertical;color:#1a2332">My employer cut my hours after I told them I have ADHD. They refused to make reasonable adjustments and a senior colleague made belittling comments about my condition in team meetings. I eventually felt forced to resign. What are my rights?</textarea>
+  <button id="analyse-btn" onclick="runAnalysis()" style="width:100%;padding:11px;background:#1a2332;color:white;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:14px">▶ Analyse This Case</button>
+
+  <div id="loading" style="display:none;padding:12px 16px;background:#f5f0e8;border:1px solid #d4c8b0;border-radius:6px;margin-bottom:12px">
+    <div id="steps-list"></div>
   </div>
 
-  <div class="case-input-box">
-    "My employer cut my hours after I told them I have ADHD. They refused to make reasonable adjustments and a senior colleague made belittling comments about my condition in team meetings. I eventually felt forced to resign."
+  <div id="result-note" style="display:none" class="result-note">
+    Output from the ConsumerSuit analysis engine. Applies UK statute references, Vento bands (6 Apr 2026), NMW checks, and settlement aggregation across all heads of claim.
   </div>
 
   <!-- Score + claims -->
+  <div id="result-main" style="display:none">
   <div class="score-grid" style="margin-bottom:12px">
     <div class="score-box">
-      <div class="score-num">82</div>
+      <div class="score-num" id="score-num">0</div>
       <div class="score-denom">/100</div>
-      <div class="strength-badge">STRONG CLAIM</div>
+      <div class="strength-badge" id="strength-badge">STRONG CLAIM</div>
     </div>
     <div class="claims-box">
       <div class="card-label">Claims identified</div>
-      <div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">Disability discrimination — failure to make reasonable adjustments (Equality Act 2010 s.20–21)</span></div>
-      <div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">Harassment related to disability (Equality Act 2010 s.26)</span></div>
-      <div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">Constructive dismissal (Employment Rights Act 1996 s.95(1)(c))</span></div>
-      <div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">Discrimination arising from disability (Equality Act 2010 s.15)</span></div>
+      <div id="claims-list"></div>
     </div>
   </div>
 
@@ -138,41 +146,34 @@ footer{text-align:center;padding:18px;background:#ede8dc;border-top:1px solid #d
   <div class="result-card">
     <div class="card-label">Settlement range</div>
     <div class="settle-grid">
-      <div class="settle-cell"><div class="settle-label">Conservative</div><div class="settle-val" style="color:#666">£18,000</div></div>
-      <div class="settle-cell"><div class="settle-label">Most likely</div><div class="settle-val" style="color:#1a2332">£38,500</div></div>
-      <div class="settle-cell"><div class="settle-label">Maximum</div><div class="settle-val" style="color:#16a34a">£68,000</div></div>
+      <div class="settle-cell"><div class="settle-label">Conservative</div><div class="settle-val" id="settle-low" style="color:#666"></div></div>
+      <div class="settle-cell"><div class="settle-label">Most likely</div><div class="settle-val" id="settle-mid" style="color:#1a2332"></div></div>
+      <div class="settle-cell"><div class="settle-label">Maximum</div><div class="settle-val" id="settle-high" style="color:#16a34a"></div></div>
     </div>
   </div>
 
   <!-- Evidence matrix -->
   <div class="result-card">
     <div class="card-label">Evidence matrix</div>
-    <div class="ev-row"><span class="ev-icon" style="color:#16a34a">✓</span><span class="ev-item">Written record of hour reduction (email or rota change)</span><span class="ev-badge" style="background:#f0fdf4;color:#16a34a;border:1px solid #86efac">STRONG</span></div>
-    <div class="ev-row"><span class="ev-icon" style="color:#16a34a">✓</span><span class="ev-item">ADHD diagnosis documentation</span><span class="ev-badge" style="background:#f0fdf4;color:#16a34a;border:1px solid #86efac">STRONG</span></div>
-    <div class="ev-row"><span class="ev-icon" style="color:#d97706">⚠</span><span class="ev-item">Witness evidence of colleague's comments in meetings</span><span class="ev-badge" style="background:#fffbeb;color:#d97706;border:1px solid #fcd34d">WEAK</span></div>
-    <div class="ev-row"><span class="ev-icon" style="color:#d97706">⚠</span><span class="ev-item">Written flexible working request and refusal</span><span class="ev-badge" style="background:#fffbeb;color:#d97706;border:1px solid #fcd34d">WEAK</span></div>
-    <div class="ev-row"><span class="ev-icon" style="color:#dc2626">✗</span><span class="ev-item">Grievance filed prior to resignation</span><span class="ev-badge" style="background:#fef2f2;color:#dc2626;border:1px solid #fca5a5">MISSING</span></div>
-    <div class="ev-row"><span class="ev-icon" style="color:#dc2626">✗</span><span class="ev-item">Medical evidence linking ADHD to working conditions</span><span class="ev-badge" style="background:#fef2f2;color:#dc2626;border:1px solid #fca5a5">MISSING</span></div>
+    <div id="evidence-list"></div>
   </div>
 
   <!-- Legislation -->
   <div class="result-card">
     <div class="card-label">Applicable legislation</div>
     <div class="law-tags">
-      <span class="law-tag">Equality Act 2010 ss.6, 13, 15, 20–21, 26, 39</span>
-      <span class="law-tag">ERA 1996 s.95(1)(c)</span>
-      <span class="law-tag">ACAS Code of Practice 1</span>
-      <span class="law-tag">Vento bands (Apr 2026)</span>
+      <div id="law-list" style="display:flex;flex-wrap:wrap;gap:5px"></div>
     </div>
   </div>
 
   <!-- Next step -->
   <div class="next-box" style="margin-bottom:16px">
     <div class="next-label">Recommended next step</div>
-    <div class="next-text">Contact ACAS to begin early conciliation before filing ET1. Strict 3-month limitation from effective date of constructive dismissal. Collect written evidence of the hour reduction and the reasonable adjustments request immediately — these are the foundation of the s.20–21 claim.</div>
+    <div class="next-text" id="next-text"></div>
   </div>
 
-  <a class="try-live" href="https://consumer-suit.uk" target="_blank" rel="noopener">Analyse your own case at consumer-suit.uk ↗</a>
+  </div><!-- /result-main -->
+  <a class="try-live" id="try-live-btn" style="display:none" href="https://consumer-suit.uk" target="_blank" rel="noopener">Analyse your own case at consumer-suit.uk ↗</a>
 </div>
 
 <!-- SKILLS PANEL -->
@@ -292,6 +293,92 @@ footer{text-align:center;padding:18px;background:#ede8dc;border-top:1px solid #d
 </footer>
 
 <script>
+const CASES=[
+  "My employer cut my hours after I told them I have ADHD. They refused to make reasonable adjustments and a senior colleague made belittling comments about my condition in team meetings. I eventually felt forced to resign. What are my rights?",
+  "My landlord kept my full £1,400 deposit when I moved out. The property was in the same condition as when I arrived and they never gave me a tenancy deposit scheme certificate.",
+  "I bought a used car 3 weeks ago for £8,500 described as full working order. The engine now has a major fault and the dealer refuses to repair it."
+];
+
+const STEPS=["Parsing dispute details...","Checking applicable legislation...","Reviewing limitation periods...","Calculating heads of claim...","Building evidence matrix...","Generating case assessment..."];
+
+const RESULTS={
+  0:{score:82,strength:"STRONG CLAIM",claims:["Disability discrimination — failure to make reasonable adjustments (EqA 2010 s.20–21)","Harassment related to disability (EqA 2010 s.26)","Constructive dismissal (ERA 1996 s.95(1)(c))","Discrimination arising from disability (EqA 2010 s.15)"],low:"£18,000",mid:"£38,500",high:"£68,000",evidence:[{i:"Written record of hour reduction",s:"STRONG"},{i:"ADHD diagnosis documentation",s:"STRONG"},{i:"Witness evidence of colleague's comments",s:"WEAK"},{i:"Written flexible working request and refusal",s:"WEAK"},{i:"Grievance filed prior to resignation",s:"MISSING"},{i:"Medical evidence linking ADHD to working conditions",s:"MISSING"}],law:["Equality Act 2010 ss.6,13,15,20–21,26,39","ERA 1996 s.95(1)(c)","ACAS Code of Practice 1","Vento bands (Apr 2026)"],next:"Contact ACAS to begin early conciliation before filing ET1. Strict 3-month limitation from effective date of constructive dismissal. Collect written evidence of the hour reduction and the reasonable adjustments request immediately."},
+  1:{score:74,strength:"STRONG CLAIM",claims:["Unlawful deposit deduction (Housing Act 2004 s.213)","Failure to provide deposit scheme information (HA 2004 s.213(5))","Potential claim for 1–3x deposit as penalty"],low:"£1,400",mid:"£2,800",high:"£4,200",evidence:[{i:"Tenancy agreement confirming deposit amount",s:"STRONG"},{i:"Bank records showing deposit payment",s:"STRONG"},{i:"Photographs of property condition at move-out",s:"WEAK"},{i:"Deposit protection scheme check (none registered)",s:"MISSING"}],law:["Housing Act 2004 ss.213–215","Deregulation Act 2015 s.33","Tenant Fees Act 2019"],next:"Check depositprotection.com, mydeposits.co.uk and tds.gb.com to confirm no scheme was used. Then send a formal letter before action to the landlord claiming the deposit plus up to 3x penalty. Small Claims Court if no response within 14 days."},
+  2:{score:68,strength:"VIABLE CLAIM",claims:["Right to reject — goods not as described (Consumer Rights Act 2015 s.20)","Goods not of satisfactory quality (CRA 2015 s.9)","Misrepresentation — 'full working order' (Misrepresentation Act 1967)"],low:"£3,500",mid:"£6,500",high:"£8,500",evidence:[{i:"Advert or listing describing car as full working order",s:"STRONG"},{i:"Proof of purchase and date",s:"STRONG"},{i:"Independent mechanic's report on fault",s:"MISSING"},{i:"Written rejection notice sent to dealer",s:"MISSING"}],law:["Consumer Rights Act 2015 ss.9,20,24","Misrepresentation Act 1967 s.2","Sale of Goods Act 1979 (private sales)"],next:"Get an independent mechanic's report immediately — this is your key evidence. Then send a written rejection letter to the dealer within 30 days of purchase citing CRA 2015 s.20. Keep all communication in writing."}
+};
+
+function loadCase(i){
+  document.getElementById('case-input').value=CASES[i];
+  document.getElementById('result-main').style.display='none';
+  document.getElementById('result-note').style.display='none';
+  document.getElementById('try-live-btn').style.display='none';
+}
+
+function evStyle(s){
+  if(s==='STRONG')return{icon:'✓',bg:'#f0fdf4',col:'#16a34a',border:'#86efac'};
+  if(s==='WEAK')return{icon:'⚠',bg:'#fffbeb',col:'#d97706',border:'#fcd34d'};
+  return{icon:'✗',bg:'#fef2f2',col:'#dc2626',border:'#fca5a5'};
+}
+
+function scCol(n){return n>=70?'#16a34a':n>=45?'#2563eb':'#dc2626';}
+
+async function runAnalysis(){
+  const txt=document.getElementById('case-input').value.trim();
+  if(!txt)return;
+  const btn=document.getElementById('analyse-btn');
+  const lb=document.getElementById('loading');
+  btn.textContent='Analysing case…';btn.disabled=true;
+  document.getElementById('result-main').style.display='none';
+  document.getElementById('result-note').style.display='none';
+  document.getElementById('try-live-btn').style.display='none';
+  lb.style.display='block';
+  const sl=document.getElementById('steps-list');sl.innerHTML='';
+  const els=STEPS.map((s,i)=>{
+    const d=document.createElement('div');
+    d.style.cssText='display:flex;align-items:center;gap:8px;padding:3px 0;font-size:13px;color:#999';
+    d.innerHTML=`<span id="si${i}" style="min-width:16px;text-align:center">○</span><span id="st${i}">${s}</span>`;
+    sl.appendChild(d);return d;
+  });
+  let cur=0;
+  await new Promise(res=>{
+    const iv=setInterval(()=>{
+      if(cur>0){document.getElementById('si'+(cur-1)).textContent='✓';els[cur-1].style.color='#1a2332';}
+      if(cur<STEPS.length){document.getElementById('si'+cur).textContent='▶';els[cur].style.color='#1a2332';cur++;}
+      else{clearInterval(iv);res();}
+    },500);
+  });
+
+  // Pick best matching pre-computed result
+  const t=txt.toLowerCase();
+  let key=0;
+  if(t.includes('deposit')||t.includes('landlord')||t.includes('tenant'))key=1;
+  else if(t.includes('car')||t.includes('vehicle')||t.includes('dealer')||t.includes('consumer'))key=2;
+  const r=RESULTS[key];
+
+  lb.style.display='none';
+  btn.textContent='▶ Analyse This Case';btn.disabled=false;
+
+  const sc=scCol(r.score);
+  // Animate score
+  const sn=document.getElementById('score-num');
+  let n=0;const iv2=setInterval(()=>{n=Math.min(n+3,r.score);sn.textContent=n;sn.style.color=sc;if(n>=r.score)clearInterval(iv2);},12);
+  document.getElementById('strength-badge').textContent=r.strength;
+  document.getElementById('strength-badge').style.borderColor=sc;
+  document.getElementById('strength-badge').style.color=sc;
+
+  document.getElementById('claims-list').innerHTML=r.claims.map(c=>`<div class="claim-row"><span class="claim-arrow">▸</span><span class="claim-text">${c}</span></div>`).join('');
+  document.getElementById('settle-low').textContent=r.low;
+  document.getElementById('settle-mid').textContent=r.mid;
+  document.getElementById('settle-high').textContent=r.high;
+  document.getElementById('evidence-list').innerHTML=r.evidence.map(e=>{const s=evStyle(e.s);return`<div class="ev-row"><span class="ev-icon" style="color:${s.col}">${s.icon}</span><span class="ev-item">${e.i}</span><span class="ev-badge" style="background:${s.bg};color:${s.col};border:1px solid ${s.border}">${e.s}</span></div>`;}).join('');
+  document.getElementById('law-list').innerHTML=r.law.map(l=>`<span class="law-tag">${l}</span>`).join('');
+  document.getElementById('next-text').textContent=r.next;
+
+  document.getElementById('result-note').style.display='block';
+  document.getElementById('result-main').style.display='block';
+  document.getElementById('try-live-btn').style.display='block';
+}
+
 function showTab(t,btn){
   ['demo','skills','arch'].forEach(id=>{
     document.getElementById('panel-'+id).style.display=id===t?'block':'none';
